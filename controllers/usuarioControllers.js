@@ -1,14 +1,17 @@
-const Usuario = require('../models/usuario');
+const Usuario = require("../models/usuario");
 
 // Crear un usuario
 const createUsuario = async (req, res) => {
   try {
+    // Agrega console.log para imprimir los datos recibidos
+    console.log("Datos recibidos:", req.body);
+
     const nuevoUsuario = new Usuario(req.body);
     await nuevoUsuario.save();
-    res.status(201).json({ mensaje: 'Usuario creado exitosamente' });
+    res.status(200).json({ mensaje: "Usuario creado exitosamente" });
   } catch (error) {
-    console.error('Error al crear usuario:', error);
-    res.status(500).json({ error: 'Error interno del servidor' });
+    console.error("Error al crear usuario:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
   }
 };
 
@@ -18,8 +21,8 @@ const getUsuarios = async (req, res) => {
     const usuarios = await Usuario.find();
     res.json(usuarios);
   } catch (error) {
-    console.error('Error al obtener usuarios:', error);
-    res.status(500).json({ error: 'Error interno del servidor' });
+    console.error("Error al obtener usuarios:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
   }
 };
 
@@ -33,8 +36,8 @@ const updateUsuario = async (req, res) => {
     );
     res.json(usuarioActualizado);
   } catch (error) {
-    console.error('Error al actualizar usuario:', error);
-    res.status(500).json({ error: 'Error interno del servidor' });
+    console.error("Error al actualizar usuario:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
   }
 };
 
@@ -42,10 +45,10 @@ const updateUsuario = async (req, res) => {
 const deleteUsuario = async (req, res) => {
   try {
     await Usuario.findByIdAndDelete(req.params.id);
-    res.json({ mensaje: 'Usuario eliminado exitosamente' });
+    res.json({ mensaje: "Usuario eliminado exitosamente" });
   } catch (error) {
-    console.error('Error al eliminar usuario:', error);
-    res.status(500).json({ error: 'Error interno del servidor' });
+    console.error("Error al eliminar usuario:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
   }
 };
 

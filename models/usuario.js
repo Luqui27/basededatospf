@@ -1,10 +1,10 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const usuarioSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    minlength: 6,
+    minlength: 3,
     maxlength: 50,
   },
   email: {
@@ -12,8 +12,9 @@ const usuarioSchema = new mongoose.Schema({
     required: true,
     unique: true,
     validate: {
-      validator: (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
-      message: 'Ingrese un email válido',
+      validator: (value) =>
+        /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/.test(value),
+      message: "Ingrese un email válido",
     },
   },
   isActive: {
@@ -22,7 +23,7 @@ const usuarioSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    // required: true,
+    required: true,
     minlength: 6,
     maxlength: 20,
   },
@@ -32,6 +33,6 @@ const usuarioSchema = new mongoose.Schema({
   },
 });
 
-const Usuario = mongoose.model('Usuario', usuarioSchema);
+const Usuario = mongoose.model("Usuario", usuarioSchema);
 
 module.exports = Usuario;
