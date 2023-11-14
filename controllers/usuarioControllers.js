@@ -1,12 +1,17 @@
 const Usuario = require("../models/usuario");
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 
 // Crear un usuario
 const createUsuario = async (req, res) => {
   try {
-    // Agrega console.log para imprimir los datos recibidos
-    //console.log("Datos recibidos:", req.body);
+    const { password, ...restoDatos } = req.body;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-    const nuevoUsuario = new Usuario(req.body);
+    const nuevoUsuario = new Usuario({
+      password: hashedPassword,
+      ...restoDatos,
+    });
     await nuevoUsuario.save();
     res.status(200).json({ mensaje: "Usuario creado exitosamente" });
   } catch (error) {
@@ -30,17 +35,14 @@ const getUsuarios = async (req, res) => {
 const updateUsuario = async (req, res) => {
   try {
     const { id } = req.params;
-    const { email } = req.body;
+    const { password, ...restoDatos } = req.body;
 
-    // Verificar si otro usuario ya tiene el mismo correo electrónico
-    const existingUser = await Usuario.findOne({ email, _id: { $ne: id } });
-    if (existingUser) {
-      return res.status(400).json({
-        error: "El correo electrónico ya está en uso. Por favor, utiliza otro.",
-      });
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, saltRounds);
+      req.body.password = hashedPassword;
     }
 
-    const usuarioActualizado = await Usuario.findByIdAndUpdate(id, req.body, {
+    const usuarioActualizado = await Usuario.findByIdAndUpdate(id, restoDatos, {
       new: true,
     });
     res.json(usuarioActualizado);
