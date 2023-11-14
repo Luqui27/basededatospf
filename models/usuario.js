@@ -19,7 +19,7 @@ const usuarioSchema = new mongoose.Schema({
   },
   isActive: {
     type: Boolean,
-    default: false,
+    default: true,
   },
   password: {
     type: String,

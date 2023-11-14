@@ -4,7 +4,7 @@ const Usuario = require("../models/usuario");
 const createUsuario = async (req, res) => {
   try {
     // Agrega console.log para imprimir los datos recibidos
-    console.log("Datos recibidos:", req.body);
+    //console.log("Datos recibidos:", req.body);
 
     const nuevoUsuario = new Usuario(req.body);
     await nuevoUsuario.save();
@@ -29,11 +29,20 @@ const getUsuarios = async (req, res) => {
 // Actualizar un usuario
 const updateUsuario = async (req, res) => {
   try {
-    const usuarioActualizado = await Usuario.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
+    const { id } = req.params;
+    const { email } = req.body;
+
+    // Verificar si otro usuario ya tiene el mismo correo electrónico
+    const existingUser = await Usuario.findOne({ email, _id: { $ne: id } });
+    if (existingUser) {
+      return res.status(400).json({
+        error: "El correo electrónico ya está en uso. Por favor, utiliza otro.",
+      });
+    }
+
+    const usuarioActualizado = await Usuario.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
     res.json(usuarioActualizado);
   } catch (error) {
     console.error("Error al actualizar usuario:", error);
@@ -44,10 +53,25 @@ const updateUsuario = async (req, res) => {
 // Eliminar un usuario
 const deleteUsuario = async (req, res) => {
   try {
-    await Usuario.findByIdAndDelete(req.params.id);
-    res.json({ mensaje: "Usuario eliminado exitosamente" });
+    const { id } = req.params;
+
+    // Actualizar isActive a false en lugar de eliminar
+    const usuarioActualizado = await Usuario.findByIdAndUpdate(
+      id,
+      { isActive: false },
+      { new: true }
+    );
+
+    if (usuarioActualizado) {
+      res.json({
+        mensaje: "Usuario deshabilitado exitosamente",
+        usuario: usuarioActualizado,
+      });
+    } else {
+      res.status(404).json({ error: "Usuario no encontrado" });
+    }
   } catch (error) {
-    console.error("Error al eliminar usuario:", error);
+    console.error("Error al deshabilitar usuario:", error);
     res.status(500).json({ error: "Error interno del servidor" });
   }
 };
