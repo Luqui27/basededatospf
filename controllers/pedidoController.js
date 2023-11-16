@@ -25,17 +25,6 @@ const getPedidos = async (req, res) => {
   }
 };
 
-// Obtener un pedido por ID
-const getPedidoById = async (req, res) => {
-  try {
-    const pedido = await Pedido.findById(req.params.id);
-    res.json(pedido);
-  } catch (error) {
-    console.error("Error al obtener pedido:", error);
-    res.status(500).json({ error: "Error interno del servidor" });
-  }
-};
-
 // Actualizar un pedido
 const updatePedido = async (req, res) => {
   try {
