@@ -62,7 +62,6 @@ const deletePedido = async (req, res) => {
 module.exports = {
   createPedido,
   getPedidos,
-  getPedidoById,
   updatePedido,
   deletePedido,
 };
