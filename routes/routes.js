@@ -15,4 +15,11 @@ router.get("/menus", menuController.getMenus);
 router.put("/menus/:id", menuController.updateMenu);
 router.delete("/menus/:id", menuController.deleteMenu);
 
+// Rutas para pedidos
+router.post("/pedidos", pedidoController.createPedido);
+router.get("/pedidos", pedidoController.getPedidos);
+router.get("/pedidos/:id", pedidoController.getPedidoById);
+router.put("/pedidos/:id", pedidoController.updatePedido);
+router.delete("/pedidos/:id", pedidoController.deletePedido);
+
 module.exports = router;
