@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const usuarioController = require("../controllers/usuarioControllers");
 const menuController = require("../controllers/menuController");
+const pedidoController = require("../controllers/pedidoController");
 
 // Rutas para usuarios
 router.post("/usuarios", usuarioController.createUsuario);

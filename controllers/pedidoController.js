@@ -1,4 +1,4 @@
-const Pedido = require("../models/Pedido");
+const Pedido = require("../models/pedido");
 
 // Crear un pedido
 const createPedido = async (req, res) => {
