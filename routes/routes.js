@@ -13,16 +13,16 @@ router.put("/usuarios/:id", usuarioController.updateUsuario);
 router.delete("/usuarios/:id", usuarioController.deleteUsuario);
 
 // Rutas para menús
-router.post("/menus", authMiddleware.verificarToken, menuController.createMenu);
+router.post("/menus", menuController.createMenu);
 router.get("/menus", menuController.getMenus);
-router.put("/menus/:id", authMiddleware.verificarToken, menuController.updateMenu);
+router.put("/menus/:id", menuController.updateMenu);
 router.delete("/menus/:id", authMiddleware.verificarToken, menuController.deleteMenu);
 
 // Rutas para pedidos
-router.post("/pedidos", authMiddleware.verificarToken, pedidoController.createPedido);
-router.get("/pedidos", authMiddleware.verificarToken, pedidoController.getPedidos);
-router.put("/pedidos/:id", authMiddleware.verificarToken, pedidoController.updatePedido);
-router.delete("/pedidos/:id", authMiddleware.verificarToken, pedidoController.deletePedido);
+router.post("/pedidos", pedidoController.createPedido);
+router.get("/pedidos", pedidoController.getPedidos);
+router.put("/pedidos/:id", pedidoController.updatePedido);
+router.delete("/pedidos/:id", pedidoController.deletePedido);
 
 router.post("/login", authController.login);
 
