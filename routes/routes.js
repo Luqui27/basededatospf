@@ -8,9 +8,9 @@ const authMiddleware = require("../middlewares/authMiddleware")
 
 // Rutas para usuarios
 router.post("/usuarios", usuarioController.createUsuario);
-router.get("/usuarios", authMiddleware.verificarToken, usuarioController.getUsuarios);
-router.put("/usuarios/:id", authMiddleware.verificarToken, usuarioController.updateUsuario);
-router.delete("/usuarios/:id", authMiddleware.verificarToken, usuarioController.deleteUsuario);
+router.get("/usuarios", usuarioController.getUsuarios);
+router.put("/usuarios/:id", usuarioController.updateUsuario);
+router.delete("/usuarios/:id", usuarioController.deleteUsuario);
 
 // Rutas para menús
 router.post("/menus", authMiddleware.verificarToken, menuController.createMenu);
