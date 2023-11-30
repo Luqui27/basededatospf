@@ -1,4 +1,3 @@
-// authMiddleware.js
 const jwt = require("jsonwebtoken");
 const secretKey = process.env.JWT_SECRET;
 
@@ -11,7 +10,11 @@ const verificarToken = (req, res, next) => {
 
   jwt.verify(token, secretKey, (err, decoded) => {
     if (err) {
-      return res.status(401).json({ error: "Token inválido" });
+      if (err.name === "TokenExpiredError") {
+        return res.status(401).json({ error: "Token ha expirado" });
+      } else {
+        return res.status(401).json({ error: "Token inválido" });
+      }
     }
 
     req.userId = decoded.userId;
