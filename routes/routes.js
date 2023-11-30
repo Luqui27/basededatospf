@@ -8,7 +8,11 @@ const authMiddleware = require("../middlewares/authMiddleware");
 
 // Rutas para usuarios
 router.post("/usuarios", usuarioController.createUsuario);
-router.get("/usuarios", usuarioController.getUsuarios);
+router.get(
+  "/usuarios",
+  authMiddleware.verificarToken,
+  usuarioController.getUsuarios
+);
 router.put("/usuarios/:id", usuarioController.updateUsuario);
 router.delete("/usuarios/:id", usuarioController.deleteUsuario);
 
