@@ -29,13 +29,11 @@ const registroController = async (req, res) => {
     );
 
     // Enviar token y isAdmin en la respuesta
-    res
-      .status(200)
-      .json({
-        token,
-        isAdmin: nuevoUsuario.isAdmin,
-        mensaje: "Usuario registrado y logueado exitosamente",
-      });
+    res.status(200).json({
+      token,
+      isAdmin: nuevoUsuario.isAdmin,
+      mensaje: "Usuario registrado y logueado exitosamente",
+    });
   } catch (error) {
     console.error("Error al registrar usuario:", error);
     res.status(500).json({ error: "Error interno del servidor" });
