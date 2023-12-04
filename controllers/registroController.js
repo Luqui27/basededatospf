@@ -28,10 +28,17 @@ const registroController = async (req, res) => {
       { expiresIn: "1h" } // Puedes ajustar la duración del token según tus necesidades
     );
 
-    // Enviar token y isAdmin en la respuesta
+    // Setear el token en una cookie
+    res.cookie("token", token, { maxAge: 3600000, httpOnly: true });
+
+    // Setear isAdmin en una cookie
+    res.cookie("isAdmin", nuevoUsuario.isAdmin, {
+      maxAge: 3600000,
+      httpOnly: true,
+    });
+
+    // Enviar mensaje en la respuesta
     res.status(200).json({
-      token,
-      isAdmin: nuevoUsuario.isAdmin,
       mensaje: "Usuario registrado y logueado exitosamente",
     });
   } catch (error) {

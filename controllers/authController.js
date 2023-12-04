@@ -17,16 +17,21 @@ const login = async (req, res) => {
         expiresIn: "1h",
       });
 
-      // Incluir el isAdmin en la respuesta
+      // Configurar la cookie con el token y isAdmin
+      res.cookie("token", token, { httpOnly: true, maxAge: 3600000 }); // maxAge is in milliseconds (1 hour)
+      res.cookie("isAdmin", usuario.isAdmin, { maxAge: 3600000 }); // maxAge is in milliseconds (1 hour)
+
+      // Enviar una respuesta JSON al cliente con información relevante
       res.json({
-        token,
         isAdmin: usuario.isAdmin,
         // Puedes incluir otros detalles del usuario aquí si es necesario
       });
     } else {
+      // Si las credenciales no son válidas, enviar un error de no autorizado
       res.status(401).json({ error: "Credenciales inválidas" });
     }
   } catch (error) {
+    // Manejar errores internos del servidor
     console.error("Error al iniciar sesión:", error);
     res.status(500).json({ error: "Error interno del servidor" });
   }
