@@ -25,7 +25,7 @@ const registroController = async (req, res) => {
     const token = jwt.sign(
       { id: nuevoUsuario._id, isAdmin: nuevoUsuario.isAdmin },
       JWT_SECRET,
-      { expiresIn: "1h" } // Puedes ajustar la duración del token según tus necesidades
+      { expiresIn: "1h" }
     );
 
     // Setear el token en una cookie
@@ -37,8 +37,10 @@ const registroController = async (req, res) => {
       httpOnly: true,
     });
 
-    // Enviar mensaje en la respuesta
+    // Enviar mensaje en la respuesta con el token y isAdmin
     res.status(200).json({
+      token,
+      isAdmin: nuevoUsuario.isAdmin,
       mensaje: "Usuario registrado y logueado exitosamente",
     });
   } catch (error) {
