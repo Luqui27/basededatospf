@@ -13,9 +13,13 @@ const login = async (req, res) => {
     // Verificar si el usuario existe y la contraseña es válida
     if (usuario && (await bcrypt.compare(password, usuario.password))) {
       // Generar token de autenticación
-      const token = jwt.sign({ userId: usuario._id }, secretKey, {
-        expiresIn: "1h",
-      });
+      const token = jwt.sign(
+        { userId: usuario._id, isAdmin: usuario.isAdmin },
+        secretKey,
+        {
+          expiresIn: "1h",
+        }
+      );
 
       // Configurar la cookie con el token y isAdmin
       res.cookie("token", token, { httpOnly: true, maxAge: 3600000 }); // maxAge is in milliseconds (1 hour)
@@ -23,6 +27,7 @@ const login = async (req, res) => {
 
       // Enviar una respuesta JSON al cliente con información relevante
       res.json({
+        token,
         isAdmin: usuario.isAdmin,
         // Puedes incluir otros detalles del usuario aquí si es necesario
       });
