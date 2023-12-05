@@ -22,7 +22,7 @@ const menuSchema = new mongoose.Schema({
   },
   category: {
     type: String,
-    enum: ['Entradas', 'Plato Principal', 'Guarniciones', 'Sopas y Cremas', 'Pizzas', 'Postres', 'Bebidas', 'Especiales de la Casa'],
+    enum: ["Bebidas", "Entradas", "Plato Principal", "Postres"],
     required: true,
   },
   url: {

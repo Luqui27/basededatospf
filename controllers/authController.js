@@ -24,11 +24,13 @@ const login = async (req, res) => {
       // Configurar la cookie con el token y isAdmin
       res.cookie("token", token, { httpOnly: true, maxAge: 3600000 }); // maxAge is in milliseconds (1 hour)
       res.cookie("isAdmin", usuario.isAdmin, { maxAge: 3600000 }); // maxAge is in milliseconds (1 hour)
+      res.cookie("_id", usuario._id, { maxAge: 3600000 });
 
       // Enviar una respuesta JSON al cliente con información relevante
       res.json({
         token,
         isAdmin: usuario.isAdmin,
+        id: usuario._id,
         // Puedes incluir otros detalles del usuario aquí si es necesario
       });
     } else {
