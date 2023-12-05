@@ -30,7 +30,7 @@ const login = async (req, res) => {
       res.json({
         token,
         isAdmin: usuario.isAdmin,
-        id: usuario._id,
+        _id: usuario._id, // Aquí corregimos el nombre de la propiedad
         // Puedes incluir otros detalles del usuario aquí si es necesario
       });
     } else {
