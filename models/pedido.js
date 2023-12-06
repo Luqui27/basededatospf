@@ -11,12 +11,13 @@ const pedidoSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
-  menu: {
-    type: String,
-    required: true,
-    minlength: 3,
-    maxlength: 50,
-  },
+  menu: [
+    {
+      type: String,
+      minlength: 3,
+      maxlength: 50,
+    },
+  ],
   servido: {
     type: Boolean,
     default: false,

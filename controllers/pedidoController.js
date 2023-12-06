@@ -3,8 +3,17 @@ const Pedido = require("../models/pedido");
 // Crear un pedido
 const createPedido = async (req, res) => {
   try {
-    const nuevoPedido = new Pedido(req.body);
+    const { usuario, fecha, menu, servido } = req.body;
+
+    const nuevoPedido = new Pedido({
+      usuario,
+      fecha,
+      menu,
+      servido: servido || false,
+    });
+
     await nuevoPedido.save();
+
     res
       .status(200)
       .json({ mensaje: "Pedido creado exitosamente", pedido: nuevoPedido });
