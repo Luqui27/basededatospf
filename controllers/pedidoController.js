@@ -1,6 +1,7 @@
+// pedidoController.js
+
 const Pedido = require("../models/pedido");
 
-// Crear un pedido
 const createPedido = async (req, res) => {
   try {
     const nuevoPedido = new Pedido(req.body);
@@ -14,7 +15,6 @@ const createPedido = async (req, res) => {
   }
 };
 
-// Obtener todos los pedidos
 const getPedidos = async (req, res) => {
   try {
     const pedidos = await Pedido.find();
@@ -25,7 +25,6 @@ const getPedidos = async (req, res) => {
   }
 };
 
-// Actualizar un pedido
 const updatePedido = async (req, res) => {
   try {
     const { id } = req.params;
@@ -39,7 +38,6 @@ const updatePedido = async (req, res) => {
   }
 };
 
-// Eliminar un pedido
 const deletePedido = async (req, res) => {
   try {
     const { id } = req.params;

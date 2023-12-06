@@ -1,21 +1,21 @@
+// pedidoModel.js
+
 const mongoose = require("mongoose");
 
 const pedidoSchema = new mongoose.Schema({
   usuario: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Usuario", // Referencia al modelo de Usuario
     required: true,
-    minlength: 3,
-    maxlength: 50,
   },
   fecha: {
     type: Date,
     required: true,
   },
   menu: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Menu", // Referencia al modelo de Menu
     required: true,
-    minlength: 3,
-    maxlength: 50,
   },
   servido: {
     type: Boolean,
