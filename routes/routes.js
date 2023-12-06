@@ -41,5 +41,9 @@ router.post("/registro", registroController);
 
 router.post("/carrito/agregar", carritoControllers.agregarAlCarrito);
 router.get("/carrito/:usuarioId", carritoControllers.obtenerCarrito);
+router.delete(
+  "/carrito/eliminar/:usuarioId/:menuId",
+  carritoControllers.eliminarMenuDelCarrito
+);
 
 module.exports = router;

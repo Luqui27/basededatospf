@@ -80,4 +80,45 @@ const obtenerCarrito = async (req, res) => {
   }
 };
 
-module.exports = { agregarAlCarrito, obtenerCarrito };
+const eliminarMenuDelCarrito = async (req, res) => {
+  try {
+    const { usuarioId, menuId } = req.params;
+
+    // Verificar si el usuario existe
+    const usuario = await Usuario.findById(usuarioId);
+
+    if (!usuario) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
+    }
+
+    // Buscar y actualizar el carrito del usuario
+    const carrito = await Carrito.findOne({ usuario: usuarioId });
+
+    if (!carrito) {
+      return res.status(404).json({ mensaje: "Carrito no encontrado" });
+    }
+
+    // Filtrar los productos para eliminar el menú del carrito
+    carrito.productos = carrito.productos.filter(
+      (producto) => producto.menu.toString() !== menuId
+    );
+
+    // Actualizar el total del carrito
+    carrito.total = carrito.productos.reduce(
+      (total, producto) => total + producto.precio * producto.cantidad,
+      0
+    );
+
+    // Guardar el carrito actualizado en la base de datos
+    await carrito.save();
+
+    res
+      .status(200)
+      .json({ mensaje: "Menú eliminado del carrito con éxito", carrito });
+  } catch (error) {
+    console.error("Error al eliminar el menú del carrito:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+};
+
+module.exports = { agregarAlCarrito, obtenerCarrito, eliminarMenuDelCarrito };
