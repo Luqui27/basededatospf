@@ -39,6 +39,7 @@ router.post("/registro", registroController);
 
 //Ruta para carrito
 
-router.post("/agregar-al-carrito", carritoControllers.agregarAlCarrito);
+router.post("/carrito/agregar", carritoControllers.agregarAlCarrito);
+router.get("/carrito/:usuarioId", carritoControllers.obtenerCarrito);
 
 module.exports = router;

@@ -55,4 +55,29 @@ const agregarAlCarrito = async (req, res) => {
   }
 };
 
-module.exports = { agregarAlCarrito };
+const obtenerCarrito = async (req, res) => {
+  try {
+    const usuarioId = req.params.usuarioId;
+
+    // Verificar si el usuario existe
+    const usuario = await Usuario.findById(usuarioId);
+
+    if (!usuario) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
+    }
+
+    // Buscar el carrito del usuario
+    const carrito = await Carrito.findOne({ usuario: usuarioId });
+
+    if (!carrito) {
+      return res.status(404).json({ mensaje: "Carrito vacío" });
+    }
+
+    res.status(200).json({ carrito, mensaje: "Carrito obtenido con éxito" });
+  } catch (error) {
+    console.error("Error al obtener el carrito:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+};
+
+module.exports = { agregarAlCarrito, obtenerCarrito };
