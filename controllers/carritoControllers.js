@@ -121,4 +121,61 @@ const eliminarMenuDelCarrito = async (req, res) => {
   }
 };
 
-module.exports = { agregarAlCarrito, obtenerCarrito, eliminarMenuDelCarrito };
+const actualizarCantidadProducto = async (req, res) => {
+  try {
+    const { usuarioId, menuId } = req.params;
+    const { nuevaCantidad } = req.body;
+
+    // Verificar si el usuario y el menú existen
+    const usuario = await Usuario.findById(usuarioId);
+    const menu = await Menu.findById(menuId);
+
+    if (!usuario || !menu) {
+      return res.status(404).json({ error: "Usuario o menú no encontrado" });
+    }
+
+    // Buscar el carrito del usuario
+    const carrito = await Carrito.findOne({ usuario: usuarioId });
+
+    if (!carrito) {
+      return res.status(404).json({ mensaje: "Carrito no encontrado" });
+    }
+
+    // Buscar el producto en el carrito
+    const productoIndex = carrito.productos.findIndex(
+      (producto) => producto.menu.toString() === menuId
+    );
+
+    if (productoIndex !== -1) {
+      // Actualizar la cantidad del producto
+      carrito.productos[productoIndex].cantidad = nuevaCantidad;
+
+      // Actualizar el total del carrito
+      carrito.total = carrito.productos.reduce(
+        (total, producto) => total + producto.precio * producto.cantidad,
+        0
+      );
+
+      // Guardar el carrito actualizado en la base de datos
+      await carrito.save();
+
+      return res
+        .status(200)
+        .json({ mensaje: "Cantidad actualizada con éxito", carrito });
+    } else {
+      return res
+        .status(404)
+        .json({ mensaje: "Producto no encontrado en el carrito" });
+    }
+  } catch (error) {
+    console.error("Error al actualizar la cantidad del producto:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+};
+
+module.exports = {
+  agregarAlCarrito,
+  obtenerCarrito,
+  eliminarMenuDelCarrito,
+  actualizarCantidadProducto,
+};

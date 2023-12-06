@@ -45,5 +45,9 @@ router.delete(
   "/carrito/eliminar/:usuarioId/:menuId",
   carritoControllers.eliminarMenuDelCarrito
 );
+router.put(
+  "/carrito/actualizar-cantidad/:usuarioId/:menuId",
+  carritoControllers.actualizarCantidadProducto
+);
 
 module.exports = router;
