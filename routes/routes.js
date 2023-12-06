@@ -6,6 +6,7 @@ const pedidoController = require("../controllers/pedidoController");
 const authController = require("../controllers/authController");
 const authMiddleware = require("../middlewares/authMiddleware");
 const registroController = require("../controllers/registroController");
+const carritoControllers = require("../controllers/carritoControllers");
 
 // Rutas para usuarios
 router.post("/usuarios", usuarioController.createUsuario);
@@ -29,9 +30,15 @@ router.get("/pedidos", pedidoController.getPedidos);
 router.put("/pedidos/:id", pedidoController.updatePedido);
 router.delete("/pedidos/:id", pedidoController.deletePedido);
 
+//Ruta para login
+
 router.post("/login", authController.login);
 
 // Ruta para registro de usuarios
 router.post("/registro", registroController);
+
+//Ruta para carrito
+
+router.post("/agregar-al-carrito", carritoControllers.agregarAlCarrito);
 
 module.exports = router;
