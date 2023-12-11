@@ -1,4 +1,7 @@
 const Pedido = require("../models/pedido");
+const Carrito = require("../models/carrito");
+const Usuario = require("../models/usuario");
+const Menu = require("../models/menu");
 
 // Obtener todos los pedidos
 const getPedidos = async (req, res) => {
@@ -27,22 +30,16 @@ const getPedidoById = async (req, res) => {
 const createPedido = async (req, res) => {
   try {
     const { usuario, productos } = req.body;
+    const nuevoPedido = new Pedido({ usuario, productos });
+    const pedidoGuardado = await nuevoPedido.save();
 
-    // Popula la información del usuario y del menú antes de guardar el pedido
-    const usuarioPopulado = await Usuario.findById(usuario);
-    const productosPopulados = await Promise.all(
-      productos.map(async (producto) => {
-        const menuPopulado = await Menu.findById(producto.menu);
-        return { menu: menuPopulado, cantidad: producto.cantidad };
-      })
+    // Limpia el carrito del usuario después de crear el pedido
+    await Carrito.findOneAndUpdate(
+      { usuario: usuario }, // Ajusta el criterio de búsqueda según tu modelo
+      { $set: { productos: [], total: 0 } }, // Establece el carrito como vacío
+      { new: true }
     );
 
-    const nuevoPedido = new Pedido({
-      usuario: usuarioPopulado,
-      productos: productosPopulados,
-    });
-
-    const pedidoGuardado = await nuevoPedido.save();
     res.status(201).json({ pedido: pedidoGuardado });
   } catch (error) {
     res.status(500).json({ error: "Error al crear el pedido" });
