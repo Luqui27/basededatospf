@@ -27,7 +27,21 @@ const getPedidoById = async (req, res) => {
 const createPedido = async (req, res) => {
   try {
     const { usuario, productos } = req.body;
-    const nuevoPedido = new Pedido({ usuario, productos });
+
+    // Popula la información del usuario y del menú antes de guardar el pedido
+    const usuarioPopulado = await Usuario.findById(usuario);
+    const productosPopulados = await Promise.all(
+      productos.map(async (producto) => {
+        const menuPopulado = await Menu.findById(producto.menu);
+        return { menu: menuPopulado, cantidad: producto.cantidad };
+      })
+    );
+
+    const nuevoPedido = new Pedido({
+      usuario: usuarioPopulado,
+      productos: productosPopulados,
+    });
+
     const pedidoGuardado = await nuevoPedido.save();
     res.status(201).json({ pedido: pedidoGuardado });
   } catch (error) {
