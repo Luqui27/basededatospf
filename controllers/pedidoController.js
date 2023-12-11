@@ -17,8 +17,14 @@ const getPedidos = async (req, res) => {
 const getPedidoById = async (req, res) => {
   try {
     const pedido = await Pedido.findById(req.params.id)
-      .populate("usuario", "email") // Incluir detalles del usuario
-      .populate("productos.menu", "nombre detalle precio"); // Incluir detalles de los productos
+      .populate({
+        path: "usuario",
+        select: "email name", // Incluir campos adicionales del usuario (email y name)
+      })
+      .populate({
+        path: "productos.menu",
+        select: "nombre detalle precio", // Incluir campos adicionales del menú (nombre, detalle y precio)
+      });
 
     res.json(pedido);
   } catch (error) {
