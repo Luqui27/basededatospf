@@ -23,6 +23,10 @@ const pedidoSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  servido: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const Pedido = mongoose.model("Pedido", pedidoSchema);

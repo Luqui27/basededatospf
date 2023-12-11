@@ -13,7 +13,10 @@ const getPedidos = async (req, res) => {
 // Obtener detalles de un pedido específico
 const getPedidoById = async (req, res) => {
   try {
-    const pedido = await Pedido.findById(req.params.id);
+    const pedido = await Pedido.findById(req.params.id)
+      .populate("usuario", "email") // Incluir detalles del usuario
+      .populate("productos.menu", "nombre detalle precio"); // Incluir detalles de los productos
+
     res.json(pedido);
   } catch (error) {
     res.status(500).json({ error: "Error al obtener los detalles del pedido" });
