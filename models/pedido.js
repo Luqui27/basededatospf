@@ -1,5 +1,3 @@
-const mongoose = require("mongoose");
-
 const pedidoSchema = new mongoose.Schema({
   usuario: {
     type: mongoose.Schema.Types.ObjectId,
@@ -15,6 +13,10 @@ const pedidoSchema = new mongoose.Schema({
       },
       cantidad: {
         type: Number,
+        required: true,
+      },
+      nombre: {
+        type: String, // Puedes ajustar el tipo de datos según la estructura de tu aplicación
         required: true,
       },
     },
