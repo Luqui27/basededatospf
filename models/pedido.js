@@ -1,5 +1,3 @@
-// pedidoModel.js
-
 const mongoose = require("mongoose");
 
 const pedidoSchema = new mongoose.Schema({
@@ -8,18 +6,22 @@ const pedidoSchema = new mongoose.Schema({
     ref: "Usuario", // Referencia al modelo de Usuario
     required: true,
   },
+  productos: [
+    {
+      menu: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Menu", // Referencia al modelo de Menu
+        required: true,
+      },
+      cantidad: {
+        type: Number,
+        required: true,
+      },
+    },
+  ],
   fecha: {
     type: Date,
-    required: true,
-  },
-  menu: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Menu", // Referencia al modelo de Menu
-    required: true,
-  },
-  servido: {
-    type: Boolean,
-    default: false,
+    default: Date.now,
   },
 });
 

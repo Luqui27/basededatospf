@@ -1,65 +1,66 @@
-// pedidoController.js
-
 const Pedido = require("../models/pedido");
 
-const createPedido = async (req, res) => {
-  try {
-    const nuevoPedido = new Pedido(req.body);
-    await nuevoPedido.save();
-    res
-      .status(200)
-      .json({ mensaje: "Pedido creado exitosamente", pedido: nuevoPedido });
-  } catch (error) {
-    console.error("Error al crear pedido:", error);
-    res.status(500).json({ error: "Error interno del servidor" });
-  }
-};
-
+// Obtener todos los pedidos
 const getPedidos = async (req, res) => {
   try {
     const pedidos = await Pedido.find();
     res.json(pedidos);
   } catch (error) {
-    console.error("Error al obtener pedidos:", error);
-    res.status(500).json({ error: "Error interno del servidor" });
+    res.status(500).json({ error: "Error al obtener los pedidos" });
   }
 };
 
+// Obtener detalles de un pedido específico
+const getPedidoById = async (req, res) => {
+  try {
+    const pedido = await Pedido.findById(req.params.id);
+    res.json(pedido);
+  } catch (error) {
+    res.status(500).json({ error: "Error al obtener los detalles del pedido" });
+  }
+};
+
+// Crear un nuevo pedido
+const createPedido = async (req, res) => {
+  try {
+    const { usuario, productos } = req.body;
+    const nuevoPedido = new Pedido({ usuario, productos });
+    const pedidoGuardado = await nuevoPedido.save();
+    res.status(201).json({ pedido: pedidoGuardado });
+  } catch (error) {
+    res.status(500).json({ error: "Error al crear el pedido" });
+  }
+};
+
+// Actualizar un pedido existente
 const updatePedido = async (req, res) => {
   try {
-    const { id } = req.params;
-    const pedidoActualizado = await Pedido.findByIdAndUpdate(id, req.body, {
-      new: true,
-    });
-    res.json(pedidoActualizado);
+    const { usuario, productos } = req.body;
+    const pedidoActualizado = await Pedido.findByIdAndUpdate(
+      req.params.id,
+      { usuario, productos },
+      { new: true }
+    );
+    res.json({ pedido: pedidoActualizado });
   } catch (error) {
-    console.error("Error al actualizar pedido:", error);
-    res.status(500).json({ error: "Error interno del servidor" });
+    res.status(500).json({ error: "Error al actualizar el pedido" });
   }
 };
 
+// Eliminar un pedido
 const deletePedido = async (req, res) => {
   try {
-    const { id } = req.params;
-    const pedidoEliminado = await Pedido.findByIdAndDelete(id);
-
-    if (pedidoEliminado) {
-      res.json({
-        mensaje: "Pedido eliminado exitosamente",
-        pedido: pedidoEliminado,
-      });
-    } else {
-      res.status(404).json({ error: "Pedido no encontrado" });
-    }
+    await Pedido.findByIdAndDelete(req.params.id);
+    res.json({ message: "Pedido eliminado correctamente" });
   } catch (error) {
-    console.error("Error al eliminar pedido:", error);
-    res.status(500).json({ error: "Error interno del servidor" });
+    res.status(500).json({ error: "Error al eliminar el pedido" });
   }
 };
 
 module.exports = {
-  createPedido,
   getPedidos,
+  getPedidoById,
+  createPedido,
   updatePedido,
   deletePedido,
 };

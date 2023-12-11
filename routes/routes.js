@@ -27,6 +27,7 @@ router.delete(
 // Rutas para pedidos
 router.post("/pedidos", pedidoController.createPedido);
 router.get("/pedidos", pedidoController.getPedidos);
+router.get("/pedidos/:id", pedidoController.getPedidoById); // Nueva ruta para obtener detalles de un pedido específico
 router.put("/pedidos/:id", pedidoController.updatePedido);
 router.delete("/pedidos/:id", pedidoController.deletePedido);
 
