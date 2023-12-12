@@ -3,6 +3,7 @@ const Carrito = require("../models/carrito");
 const Usuario = require("../models/usuario");
 const Menu = require("../models/menu");
 
+// Obtener todos los pedidos
 const getPedidos = async (req, res) => {
   try {
     const pedidos = await Pedido.find();
@@ -12,17 +13,12 @@ const getPedidos = async (req, res) => {
   }
 };
 
+// Obtener detalles de un pedido específico
 const getPedidoById = async (req, res) => {
   try {
     const pedido = await Pedido.findById(req.params.id)
-      .populate({
-        path: "usuario",
-        select: "email name",
-      })
-      .populate({
-        path: "productos.menu",
-        select: "nombre detalle precio",
-      });
+      .populate("usuario", "email") // Incluir detalles del usuario
+      .populate("productos.menu", "nombre detalle precio"); // Incluir detalles de los productos
 
     res.json(pedido);
   } catch (error) {
@@ -30,20 +26,17 @@ const getPedidoById = async (req, res) => {
   }
 };
 
+// Crear un nuevo pedido
 const createPedido = async (req, res) => {
   try {
-    const { usuario, productos } = req.body.map((producto) => ({
-      menu: producto.menu,
-      cantidad: producto.cantidad,
-      nombre: producto.nombre,
-    }));
-
+    const { usuario, productos } = req.body;
     const nuevoPedido = new Pedido({ usuario, productos });
     const pedidoGuardado = await nuevoPedido.save();
 
+    // Limpia el carrito del usuario después de crear el pedido
     await Carrito.findOneAndUpdate(
-      { usuario: usuario },
-      { $set: { productos: [], total: 0 } },
+      { usuario: usuario }, // Ajusta el criterio de búsqueda según tu modelo
+      { $set: { productos: [], total: 0 } }, // Establece el carrito como vacío
       { new: true }
     );
 
@@ -53,6 +46,7 @@ const createPedido = async (req, res) => {
   }
 };
 
+// Actualizar un pedido existente
 const updatePedido = async (req, res) => {
   try {
     const { usuario, productos } = req.body;
@@ -67,6 +61,7 @@ const updatePedido = async (req, res) => {
   }
 };
 
+// Eliminar un pedido
 const deletePedido = async (req, res) => {
   try {
     await Pedido.findByIdAndDelete(req.params.id);

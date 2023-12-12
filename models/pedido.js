@@ -17,10 +17,6 @@ const pedidoSchema = new mongoose.Schema({
         type: Number,
         required: true,
       },
-      nombre: {
-        type: String, // Puedes ajustar el tipo de datos según la estructura de tu aplicación
-        required: true,
-      },
     },
   ],
   fecha: {
