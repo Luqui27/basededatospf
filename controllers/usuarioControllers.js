@@ -78,9 +78,27 @@ const deleteUsuario = async (req, res) => {
   }
 };
 
+// Obtener un usuario por ID
+const getUsuarioById = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const usuario = await Usuario.findById(userId);
+
+    if (usuario) {
+      res.json(usuario);
+    } else {
+      res.status(404).json({ error: "Usuario no encontrado" });
+    }
+  } catch (error) {
+    console.error("Error al obtener usuario por ID:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+};
+
 module.exports = {
   createUsuario,
   getUsuarios,
+  getUsuarioById, // Add this method
   updateUsuario,
   deleteUsuario,
 };

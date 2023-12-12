@@ -13,6 +13,7 @@ router.post("/usuarios", usuarioController.createUsuario);
 router.get("/usuarios", usuarioController.getUsuarios);
 router.put("/usuarios/:id", usuarioController.updateUsuario);
 router.delete("/usuarios/:id", usuarioController.deleteUsuario);
+router.get("/usuarios/:userId", usuarioController.getUsuarioById);
 
 // Rutas para menús
 router.post("/menus", menuController.createMenu);
