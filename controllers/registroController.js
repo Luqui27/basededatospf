@@ -37,10 +37,14 @@ const registroController = async (req, res) => {
       httpOnly: true,
     });
 
+    //setear _id en una cookie
+    res.cookie("_id", usuario._id, { maxAge: 3600000 });
+
     // Enviar mensaje en la respuesta con el token y isAdmin
     res.status(200).json({
       token,
       isAdmin: nuevoUsuario.isAdmin,
+      _id: nuevoUsuario._id,
       mensaje: "Usuario registrado y logueado exitosamente",
     });
   } catch (error) {
