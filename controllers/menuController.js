@@ -5,7 +5,9 @@ const createMenu = async (req, res) => {
   try {
     const nuevoMenu = new Menu(req.body);
     await nuevoMenu.save();
-    res.status(200).json({ mensaje: "Menú creado exitosamente", menu: nuevoMenu });
+    res
+      .status(200)
+      .json({ mensaje: "Menú creado exitosamente", menu: nuevoMenu });
   } catch (error) {
     console.error("Error al crear menú:", error);
     res.status(500).json({ error: "Error interno del servidor" });
@@ -57,9 +59,22 @@ const deleteMenu = async (req, res) => {
   }
 };
 
+// Obtener detalles de un menú por ID
+const getMenuById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const menu = await Menu.findById(id);
+    res.json(menu);
+  } catch (error) {
+    console.error("Error al obtener detalles del menú:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+};
+
 module.exports = {
   createMenu,
   getMenus,
   updateMenu,
   deleteMenu,
+  getMenuById,
 };
