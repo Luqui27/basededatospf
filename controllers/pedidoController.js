@@ -46,7 +46,6 @@ const createPedido = async (req, res) => {
   }
 };
 
-// Actualizar un pedido existente
 const updatePedido = async (req, res) => {
   try {
     const { usuario, productos } = req.body;
@@ -58,6 +57,23 @@ const updatePedido = async (req, res) => {
     res.json({ pedido: pedidoActualizado });
   } catch (error) {
     res.status(500).json({ error: "Error al actualizar el pedido" });
+  }
+};
+
+// Nueva función para actualizar el estado 'Servido' de un pedido existente
+const updateServido = async (req, res) => {
+  try {
+    const { servido } = req.body;
+    const pedidoActualizado = await Pedido.findByIdAndUpdate(
+      req.params.id,
+      { servido },
+      { new: true }
+    );
+    res.json({ pedido: pedidoActualizado });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Error al actualizar el estado 'servido' del pedido" });
   }
 };
 
@@ -77,4 +93,5 @@ module.exports = {
   createPedido,
   updatePedido,
   deletePedido,
+  updateServido,
 };
