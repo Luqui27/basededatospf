@@ -29,14 +29,14 @@ const getPedidoById = async (req, res) => {
 // Crear un nuevo pedido
 const createPedido = async (req, res) => {
   try {
-    const { usuario, productos } = req.body;
-    const nuevoPedido = new Pedido({ usuario, productos });
+    const { usuario, productos, servido } = req.body;
+    const nuevoPedido = new Pedido({ usuario, productos, servido });
     const pedidoGuardado = await nuevoPedido.save();
 
     // Limpia el carrito del usuario después de crear el pedido
     await Carrito.findOneAndUpdate(
-      { usuario: usuario }, // Ajusta el criterio de búsqueda según tu modelo
-      { $set: { productos: [], total: 0 } }, // Establece el carrito como vacío
+      { usuario: usuario },
+      { $set: { productos: [], total: 0 } },
       { new: true }
     );
 
@@ -49,10 +49,10 @@ const createPedido = async (req, res) => {
 // Actualizar un pedido existente
 const updatePedido = async (req, res) => {
   try {
-    const { usuario, productos } = req.body;
+    const { usuario, productos, servido } = req.body;
     const pedidoActualizado = await Pedido.findByIdAndUpdate(
       req.params.id,
-      { usuario, productos },
+      { usuario, productos, servido },
       { new: true }
     );
     res.json({ pedido: pedidoActualizado });
