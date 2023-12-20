@@ -1,12 +1,14 @@
-const Usuario = require("../models/usuario");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const JWT_SECRET = process.env.JWT_SECRET;
-const saltRounds = 10;
-
 const registroController = async (req, res) => {
   try {
     const { password, isAdmin, ...restoDatos } = req.body;
+
+    // Check if the email already exists
+    const existingUser = await Usuario.findOne({ email: restoDatos.email });
+
+    if (existingUser) {
+      // Email already in use, send a specific response
+      return res.status(409).json({ error: "El correo electrónico ya está en uso. Por favor, utiliza otro." });
+    }
 
     // Hash de la contraseña
     const hashedPassword = await bcrypt.hash(password, saltRounds);

@@ -98,7 +98,7 @@ const getUsuarioById = async (req, res) => {
 module.exports = {
   createUsuario,
   getUsuarios,
-  getUsuarioById, // Add this method
+  getUsuarioById,
   updateUsuario,
   deleteUsuario,
 };
