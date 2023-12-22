@@ -29,16 +29,16 @@ const registroController = async (req, res) => {
     );
 
     // Setear el token en una cookie
-    res.cookie("token", token, { maxAge: 3600000, httpOnly: true });
+    res.cookie("token", token, {secure: true, httpOnly: true, maxAge: 3600000});
 
     // Setear isAdmin en una cookie
     res.cookie("isAdmin", nuevoUsuario.isAdmin, {
       maxAge: 3600000,
-      httpOnly: true,
+      secure: true, httpOnly: true,
     });
 
     //setear _id en una cookie
-    res.cookie("_id", nuevoUsuario._id, { maxAge: 3600000 });
+    res.cookie("_id", nuevoUsuario._id, {secure: true, httpOnly: true, maxAge: 3600000 });
 
     // Enviar mensaje en la respuesta con el token y isAdmin
     res.status(200).json({
