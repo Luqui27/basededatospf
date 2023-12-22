@@ -49,7 +49,7 @@ const registroController = async (req, res) => {
     });
   } catch (error) {
     console.error("Error al registrar usuario:", error);
-    res.status(500).json({ error: "Error interno del servidor" });
+    res.status(409).json({ error: "Error interno del servidor" });
   }
 };
 
