@@ -22,9 +22,21 @@ const login = async (req, res) => {
       );
 
       // Configurar la cookie con el token y isAdmin
-      res.cookie("token", token, { secure: true, httpOnly: true, maxAge: 3600000 }); // maxAge is in milliseconds (1 hour)
-      res.cookie("isAdmin", usuario.isAdmin, {secure: true, httpOnly: true, maxAge: 3600000 }); // maxAge is in milliseconds (1 hour)
-      res.cookie("_id", usuario._id, {secure: true, httpOnly: true, maxAge: 3600000 });
+      res.cookie("token", token, {
+        secure: true,
+        httpOnly: true,
+        maxAge: 3600000,
+      }); // maxAge is in milliseconds (1 hour)
+      res.cookie("isAdmin", usuario.isAdmin, {
+        secure: true,
+        httpOnly: true,
+        maxAge: 3600000,
+      }); // maxAge is in milliseconds (1 hour)
+      res.cookie("_id", usuario._id, {
+        secure: true,
+        httpOnly: true,
+        maxAge: 3600000,
+      });
 
       // Enviar una respuesta JSON al cliente con información relevante
       res.json({
